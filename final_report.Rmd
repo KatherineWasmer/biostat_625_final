@@ -1,0 +1,28 @@
+---
+title: "Predicting Outcomes in Cardiovascular Disease"
+author: "Anyan Liu, Wenxin Ni, Kate Wasmer, You Wu"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+## Introduction
+
+Heart disease is the leading cause of death in the United States and does not discriminate against sex or race. According to the Center for Disease Control and Prevention, one person dies from cardiovascular disease every 33 seconds. This translates to roughly 2,600 deaths per day, which actuates the need for correctly identifying and diagnosing this condition. Furthermore, individuals who are less likely to develop heart problems (e.g., those under the age of 50) often fall under the radar, and therefore do not receive the proper medical care. The lack of preventative measures in cases like these lead to fatal consequences, resulting in orphaned children and wrongful deaths. However, age is only one of many factors that play a role in cardiovascular disease.
+
+By analyzing datasets with a wide range of predictors and ensembling machine learning models, our objective in this project was to determine whether or not an individual will develop heart disease with the greatest possible accuracy. The alarming statistics for this condition propelled us to engineer and fine-tune different classifiers to obtain not only a high level of accuracy, but also desirable precision and recall rates. Alongside the overarching goal of achieving optimal performance metrics, we also investigated the strength of each feature in our dataset, determining which factors are the most integral to developing heart disease.
+
+## Methods
+
+Collecting and handling data for our research question provided a computational challenge and prompted us to reconsider our methodology. One of the greatest obstacles was establishing an acceptable sample size for our data set. As is the case with any machine learning model, generalizability and robustness are essential for obtaining reproducible results. After weighing the benefits and limitations of a variety of Kaggle datasets, we decided on the Cardiovascular Disease dataset (Ulianova, 2018). With a sample size of 70,000 patients and a variety of features that captured demographic, clinical, and diagnostic measurements, we considered this data conducive with our research objectives.
+
+Before implementing any machine learning algorithms on the data, we spent a day on preprocessing. Kate utilizes the pandas library in Python to conduct “feature engineering”. The following changes were made to the original dataset to maximize understanding of the given data, and to stay consistent with scientific facts:
+
+1.  For the patients’ age, we modified the units from days to years for better readability. We developed a simple apply() method in pandas that returned a new column called “age_years”, by dividing each value in the “age” column by 365. We then dropped the “age” column, since it was no longer necessary for our analysis.
+
+2.  We implemented a lambda function that assigned each individual to a blood pressure category based on their systolic and diastolic readings. For different groups, we relied on the American Heart Association’s most recent diagnostic criteria, yielding 5 different categories: normal, elevated, high blood pressure stage 1, high blood pressure stage 2, and hypertensive crisis. This new feature was labelled “BP Category”.
+
+3.  We also feature engineered a column for the BMI, using an analogous lambda function as the one in (2). Given that the author of this dataset was based in Toronto, the height and weight were measured in centimeters and kilograms. We simply used the formula (kilograms/meters^{2}) to compute the BMI for each individual.
+
+4. In the sex column, we modified the encoded data (where 1=female and 2=male) to ‘F’ and ‘M’ for increased comprehension. 
+
+#### Random Forest 
