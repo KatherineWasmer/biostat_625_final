@@ -1,0 +1,80 @@
+---
+title: "Cardiovascular Disease Prediction and Feature Analysis"
+author: Anyan Liu, Wenxin Ni, Kate Wasmer, You Wu
+geometry: "left=1cm,right=1cm,top=1cm,bottom=1cm"
+output: pdf_document
+date: "2024-12-17"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 1. Abstract
+```{}
+```
+## 2. Introduction
+Heart disease is the leading cause of death in the United States and does not discriminate against sex or race. According to the Center for Disease Control and Prevention, one person dies from cardiovascular disease every 33 seconds. This translates to roughly 2,600 deaths per day, which actuates the need for correctly identifying and diagnosing this condition. Furthermore, individuals who are less likely to develop heart problems (e.g., those under the age of 50) often fall under the radar, and therefore do not receive the proper medical care. The lack of preventative measures in cases like these lead to fatal consequences, resulting in orphaned children and wrongful deaths. However, age is only one of many factors that play a role in cardiovascular disease.
+
+By analyzing datasets with a wide range of predictors and ensembling machine learning models, our objective in this project was to determine whether or not an individual will develop heart disease with the greatest possible accuracy. The alarming statistics for this condition propelled us to engineer and fine-tune different classifiers to obtain not only a high level of accuracy, but also desirable precision and recall rates. Alongside the overarching goal of achieving optimal performance metrics, we also investigated the strength of each feature in our dataset, determining which factors are the most integral to developing heart disease.
+
+## 3. Method
+Our procedure follows a clear and structured workflow. We start with data preprocessing to clean and prepare the dataset. Next, we perform EDA to gain a frist sight of data. After that, we conduct feature importance analysis to identify which features most influence the outcome. Then, we move on to model training. Finally, we complete the process with performance evaluation to assess how well the models perform. 
+
+### 1) Data Collection Rationale
+Collecting and handling data for our research question provided a computational challenge and prompted us to reconsider our methodology. One of the greatest obstacles was establishing an acceptable sample size for our data set. As is the case with any machine learning model, generalizability and robustness are essential for obtaining reproducible results. After weighing the benefits and limitations of a variety of Kaggle datasets, we decided on the Cardiovascular Disease dataset (Ulianova, 2018). With a sample size of 70,000 patients and a variety of predictors that captured demographic, clinical, and diagnostic measurements, we considered this data conducive with our research objectives.
+
+### 2) Data Preprocessing
+
+Before implementing any machine learning algorithms on the data, we spent a day on preprocessing. Kate utilizes the pandas library in Python to conduct “feature engineering”. The following changes were made to the original dataset to maximize understanding of the given data, and to stay consistent with scientific facts:
+
+1. For the patients’ age, we modified the units from days to years for better readability. We developed a simple apply() method in pandas that returned a new column called “age_years”, by dividing each value in the “age” column by 365.  We then dropped the “age” column, since it was no longer necessary for our analysis.
+
+2. We implemented a lambda function that assigned each individual to a blood pressure category based on their systolic and diastolic readings. For different groups, we relied on the American Heart Association’s most recent diagnostic criteria, yielding 5 different categories: normal, elevated, high blood pressure stage 1, high blood pressure stage 2, and hypertensive crisis. This new feature was labelled “BP Category”.
+
+Besides, we have () null values, accounting for ()% of the whole dataset. So we directly remove these null values to make sure every model can work. But for HCBC, since it natrually accept null values, we also want to explore the difference between removing null values and not to do so. Also, for SVM, which cannot work with null values, based on the literature we found, we tried imputation approach. 
+
+Noteworthy, these variations were explored within each classifier individually to understand the impact of different missing value handling strategies on model performance. However, when comparing the performance across all four classifiers, we consistently used models trained on datasets with null values removed, aimed to ensure fairness and consistency in the comparison.
+
+### 3) Basic Explanatory Data Analysis
+```{}
+
+```
+### 4) Feature Analysis
+```{}
+
+```
+### 5) Model Training
+```{}
+For model training, we split the data into 80% and 20% to be the train set and test set.
+```
+#### a. Support Vector Machine (SVM)
+
+Support Vector Machines(SVM) are powerful models widely used for classification problems. SVMs are especially effective handling high-dimensional data, although our dataset only includes 14 variables, they are still suitable because SVMs still can find optimal decision boundaries. Also, the correlation matrix plot shown before shows weak linear relationship, which means that compared to linear model, SVM can be a good choice. Besides, SVMs have good resistance to overfitting, especially for low-dimensional datasets like the one we used.
+
+For SVM, we should carefully address the missing value issue. According to a study done by JiaHang Li et al., KNN imputation turns out to be a good imputation approach for SVM models. Thus, in our study, we also try KNN imputation to check whether it can enhance the overall performance. Also, we train another model using dataset with null values directly removed.
+
+Initially, we used the Linear kernel for training the SVM model. However, the training process took an exceptionally long time, making it computationally inefficient. To address this, we switched to the Radial kernel, which significantly reduced the training time. Additionally, we compared the accuracy of two groups and found that they are comparable. Therefore, we proceeded with the Radial kernel for further hyperparameter tuning.
+
+Then, we performed 10-fold cross-validation grid search to tune the hyperparameters cost and gamma. After comparing the results, we selected the combination of these two hyperparameters that yielded the highest accuracy.
+
+#### b. HistGradientBoostingClassifier (HGBC)
+
+#### c. Random Forest (RF)
+
+To predict cardiovascular disease classification, the Random Forest algorithm was employed as an ensemble method consisting of multiple decision trees. Each tree was built using bootstrap samples, and at each node, a randomly selected subset of features was evaluated for optimal splitting based on the Gini impurity criterion, enhancing model diversity and reducing overfitting. Final predictions were determined by majority voting across all trees.
+
+To rigorously evaluate the model's performance, the dataset was randomly divided into training and testing sets, with missing values imputed using the na.omit method. To optimize the model performance, hyperparameter tuning was conducted using a 5-fold cross-validation strategy. By defining the hyperparameter search space for the Random Forest, including the number of randomly selected features, the impurity criterion for node splitting, and the tree depth, the optimal parameter combination was determined based on cross-validated performance metrics. Additionally, the importance of  features in RF was assessed using the Mean Decrease Gini (MDG) index. Variables with higher MDG values were considered to have greater predictive significance for cardiovascular disease. Then, we use the final RF on the testing sets.
+
+
+#### d. XGBoost
+
+
+## 4. Result
+
+## 5. Conclusion
+
+## 6. References
+
+## 7. Contribution
+
