@@ -21,8 +21,34 @@ Before implementing any machine learning algorithms on the data, we spent a day 
 
 2.  We implemented a lambda function that assigned each individual to a blood pressure category based on their systolic and diastolic readings. For different groups, we relied on the American Heart Association’s most recent diagnostic criteria, yielding 5 different categories: normal, elevated, high blood pressure stage 1, high blood pressure stage 2, and hypertensive crisis. This new feature was labelled “BP Category”.
 
-3.  We also feature engineered a column for the BMI, using an analogous lambda function as the one in (2). Given that the author of this dataset was based in Toronto, the height and weight were measured in centimeters and kilograms. We simply used the formula (kilograms/meters^{2}) to compute the BMI for each individual.
+3.  We also feature engineered a column for the BMI, using an analogous lambda function as the one in (2). Given that the author of this dataset was based in Toronto, the height and weight were measured in centimeters and kilograms. We simply used the formula (kilograms/meters$^2$) to compute the BMI for each individual.
 
-4. In the sex column, we modified the encoded data (where 1=female and 2=male) to ‘F’ and ‘M’ for increased comprehension. 
+4.  In the sex column, we modified the encoded data (where 1=female and 2=male) to ‘F’ and ‘M’ for increased comprehension.
 
-#### Random Forest 
+5.  The reported systolic and diastolic blood pressures caused a problem in the scientific integrity of our research. Many of the measurements were not recorded accurately; examples included negative blood pressures (which is not possible), or cases where the systolic number was lower than the diastolic, which cannot realistically happen. To avoid making false assumptions about this erroneous data, we replaced these blood pressure values with null values, which would later be imputed, natively used in a classifier, or just deleted from the dataset. 
+
+### Support Vector Machine
+
+### Random Forest
+
+To predict cardiovascular disease classification, the Random Forest algorithm was employed as an ensemble method consisting of multiple decision trees. Each tree was built using bootstrap samples, and at each node, a randomly selected subset of features was evaluated for optimal splitting based on the Gini impurity criterion, enhancing model diversity and reducing overfitting. Final predictions were determined by majority voting across all trees.
+
+To rigorously evaluate the model's performance, the dataset was randomly divided into training and testing sets, with missing values imputed using the na.omit method. To optimize the model performance, hyperparameter tuning was conducted using a 5-fold cross-validation strategy. By defining the hyperparameter search space for the Random Forest, including the number of randomly selected features, the impurity criterion for node splitting, and the tree depth, the optimal parameter combination was determined based on cross-validated performance metrics.
+
+Additionally, the importance of features in RF was assessed using the Mean Decrease Gini (MDG) index. Variables with higher MDG values were considered to have greater predictive significance for cardiovascular disease. Then, we use the final RF on the testing sets.
+
+### XG Boost Classifier
+
+The XGBoost algorithm was used to build and evaluate a predictive model for cardiovascular disease (CVD) using a gradient boosting algorithm. We began with the data preprocessing, where missing values were removed and categorical variables were numerically encoded. The dataset was split into 80% training and 20% testing subsets using stratified sampling to maintain class balance.
+
+A 5-fold cross-validation with a random search was applied for hyperparameter tuning in order to optimize model performance. The search space included parameters such as the learning rate, tree depth, row sampling ratio, column sampling ratio and minimum loss reduction. Using the best-tuned hyperparameters, the final XGBoost model was trained and evaluated on the test set. Performance metrics, including accuracy, precision, recall, and the ROC-AUC score, were calculated to assess model effectiveness. Additionally, feature importance was analyzed using the xgb.importance function to identify the most influential variables in predicting heart disease.
+
+#### HistGradientBoostingClassifier
+
+## Results
+
+## References
+
+CDC. (2024, April 29). *Heart Disease Facts.* CDC. <https://www.cdc.gov/heart-disease/data-research/facts-stats/index.html>
+
+Ulianova, S. (2018). *Cardiovascular Disease dataset* [Dataset]. Ryerson University. <https://www.kaggle.com/datasets/sulianova/cardiovascular-disease-dataset>
