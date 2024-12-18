@@ -69,7 +69,11 @@ We ran two different sets with the HistGradientBoostingClassifier; the first set
 
 ## References
 
+American Heart Association. (2024, May 17). *Understanding blood pressure readings*. American Heart Association. https://www.heart.org/en/health-topics/high-blood-pressure/understanding-blood-pressure-readings
+
 CDC. (2024, April 29). *Heart Disease Facts.* CDC. <https://www.cdc.gov/heart-disease/data-research/facts-stats/index.html>
+
+*HistGradientBoostingClassifier.* (2024). Scikit-Learn. <https://scikit-learn.org/1.5/modules/generated/sklearn.ensemble.HistGradientBoostingClassifier.html>
 
 Liu, A. et. al. (2024, December 17). *biostat_625_final*. [Github Repository] <https://github.com/KatherineWasmer/biostat_625_final>
 
