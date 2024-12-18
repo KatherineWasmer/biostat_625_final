@@ -5,17 +5,25 @@ date: "`r Sys.Date()`"
 output: pdf_document
 ---
 
+## Abstract
+
+Heart disease is closely related to morbidity, mortality and high medical cost. Due to its high prevalence and severe risk, accurately predicting heart disease is essential. Machine learning algorithms have proven effective in predicting disease. Our study aimed to access and summarize the performance of several machine learning models in predicting heart disease. In this study, heart disease medical records were retrieved from the Cardiovascular Disease dataset (Ulianova, 2018) on Kaggle with a sample size 70,000. The dataset was randomly divided into 80% training and 20% testing sets. With 14 potential predictors, four machine learning models (SVM, Random Forest, XGBoost, HistGradientBoostingClassifier) were employed and used hyperparameter optimization in our study. For predictive performance, xxxx had the highest xxx ( ), and xxxx had the best xxxx ( ). In addition, xxx had high AUC ( ) comparable to other models. We conclude that the xxxxxx model outperforms other algorithms in predicting heart disease. However, there exists heterogeneity among ML algorithms in multiple parameters. Clinicians can leverage these differences to apply the most suitable algorithm for their dataset, thereby optimizing predictive performance.
+
 ## Introduction
 
 Heart disease is the leading cause of death in the United States and does not discriminate against sex or race. According to the Center for Disease Control and Prevention, one person dies from cardiovascular disease every 33 seconds. This translates to roughly 2,600 deaths per day, which actuates the need for correctly identifying and diagnosing this condition. Furthermore, individuals who are less likely to develop heart problems (e.g., those under the age of 50) often fall under the radar, and therefore do not receive the proper medical care. The lack of preventative measures in cases like these lead to fatal consequences, resulting in orphaned children and wrongful deaths. However, age is only one of many factors that play a role in cardiovascular disease.
 
-By analyzing datasets with a wide range of predictors and ensembling machine learning models, our objective in this project was to determine whether or not an individual will develop heart disease with the greatest possible accuracy. The alarming statistics for this condition propelled us to engineer and fine-tune different classifiers to obtain not only a high level of accuracy, but also desirable precision and recall rates. Alongside the overarching goal of achieving optimal performance metrics, we also investigated the strength of each feature in our dataset, determining which factors are the most integral to developing heart disease.
+By analyzing datasets with a wide range of predictors and ensembling machine learning models, our objective in this project was to determine whether or not an individual will develop heart disease with the greatest possible accuracy.[^1] The alarming statistics for this condition propelled us to engineer and fine-tune different classifiers to obtain not only a high level of accuracy, but also desirable precision and recall rates. Alongside the overarching goal of achieving optimal performance metrics, we also investigated the strength of each feature in our dataset, determining which factors are the most integral to developing heart disease.
+
+[^1]: The link to our GitHub is listed in the References section, underneath Liu, A. et. al. For a direct link, please access <https://github.com/KatherineWasmer/biostat_625_final>
 
 ## Methods
 
 Collecting and handling data for our research question provided a computational challenge and prompted us to reconsider our methodology. One of the greatest obstacles was establishing an acceptable sample size for our data set. As is the case with any machine learning model, generalizability and robustness are essential for obtaining reproducible results. After weighing the benefits and limitations of a variety of Kaggle datasets, we decided on the Cardiovascular Disease dataset (Ulianova, 2018). With a sample size of 70,000 patients and a variety of features that captured demographic, clinical, and diagnostic measurements, we considered this data conducive with our research objectives.
 
-Before implementing any machine learning algorithms on the data, we spent a day on preprocessing. Kate utilizes the pandas library in Python to conduct “feature engineering”. The following changes were made to the original dataset to maximize understanding of the given data, and to stay consistent with scientific facts:
+Before implementing any machine learning algorithms on the data, we spent a day on preprocessing. Kate utilizes the pandas library in Python to conduct “feature engineering”. The following changes[^2] were made to the original dataset to maximize understanding of the given data, and to stay consistent with scientific facts:
+
+[^2]: The source code for changes 1-4 can be found at <https://github.com/KatherineWasmer/biostat_625_final/blob/main/initial_filter_cardio.ipynb>, and the output csv file can be found at cleaned_data_v1.csv underneath the main branch of our GitHub. For change (5), please refer to cleaning_irrational_data.ipynb and cleaned_data_v2.csv.
 
 1.  For the patients’ age, we modified the units from days to years for better readability. We developed a simple apply() method in pandas that returned a new column called “age_years”, by dividing each value in the “age” column by 365. We then dropped the “age” column, since it was no longer necessary for our analysis.
 
@@ -25,9 +33,17 @@ Before implementing any machine learning algorithms on the data, we spent a day 
 
 4.  In the sex column, we modified the encoded data (where 1=female and 2=male) to ‘F’ and ‘M’ for increased comprehension.
 
-5.  The reported systolic and diastolic blood pressures caused a problem in the scientific integrity of our research. Many of the measurements were not recorded accurately; examples included negative blood pressures (which is not possible), or cases where the systolic number was lower than the diastolic, which cannot realistically happen. To avoid making false assumptions about this erroneous data, we replaced these blood pressure values with null values, which would later be imputed, natively used in a classifier, or just deleted from the dataset. 
+5.  The reported systolic and diastolic blood pressures caused a problem in the scientific integrity of our research. Many of the measurements were not recorded accurately; examples included negative blood pressures (which is not possible), or cases where the systolic number was lower than the diastolic, which cannot realistically happen. To avoid making false assumptions about this erroneous data, we replaced these blood pressure values with null values, which would later be imputed, natively used in a classifier, or just deleted from the dataset.
 
 ### Support Vector Machine
+
+Support Vector Machines(SVM) are powerful models widely used for classification problems. SVMs are especially effective handling high-dimensional data, although our dataset only includes 14 variables, they are still suitable because SVMs still can find optimal decision boundaries. Also, the correlation matrix plot shown before shows weak linear relationship, which means that compared to linear model, SVM can be a good choice. Besides, SVMs have good resistance to overfitting, especially for low-dimensional datasets like the one we used.
+
+For SVM, we should carefully address the missing value issue. According to a study done by JiaHang Li et al., KNN imputation turns out to be a good imputation approach for SVM models. Thus, in our study, we also try KNN imputation to check whether it can enhance the overall performance. Also, we train another model using dataset with null values directly removed.
+
+Initially, we used the Linear kernel for training the SVM model. However, the training process took an exceptionally long time, making it computationally inefficient. To address this, we switched to the Radial kernel, which significantly reduced the training time. Additionally, we compared the accuracy of two groups and found that they are comparable. Therefore, we proceeded with the Radial kernel for further hyperparameter tuning.
+
+Then, we performed 10-fold cross-validation grid search to tune the hyperparameters cost and gamma. After comparing the results, we selected the combination of these two hyperparameters that yielded the highest accuracy.
 
 ### Random Forest
 
@@ -43,12 +59,18 @@ The XGBoost algorithm was used to build and evaluate a predictive model for card
 
 A 5-fold cross-validation with a random search was applied for hyperparameter tuning in order to optimize model performance. The search space included parameters such as the learning rate, tree depth, row sampling ratio, column sampling ratio and minimum loss reduction. Using the best-tuned hyperparameters, the final XGBoost model was trained and evaluated on the test set. Performance metrics, including accuracy, precision, recall, and the ROC-AUC score, were calculated to assess model effectiveness. Additionally, feature importance was analyzed using the xgb.importance function to identify the most influential variables in predicting heart disease.
 
-#### HistGradientBoostingClassifier
+### HistGradientBoostingClassifier
+
+The HistGradientBoostingClassifier (HGBC) is seen as an extension of the XGBoostClassifier, with native support for both null data and categorical data. These two properties accelerated our workflow and resulted in quick computation. The former indicated that imputation wasn’t necessary for the dataset. Given that most data is not missing completely at random (MCAR), the imputation methods could lead to some potential bias in the prediction, so having the ability to retain null values is especially effective. Moreover, the native support for categorical data eliminated the need to encode non-numerical columns, which is often a crucial step in the machine learning pipeline. This classifier is also adaptable to large data sets; it is considered a fast estimator that doesn’t require a large amount of memory. It is often difficult to find a balanced tradeoff between speed and memory when working with big data, so the HGBC is an excellent choice for fixing this problem.
+
+We ran two different sets with the HistGradientBoostingClassifier; the first set included all 70,000 records due to the native support of missing values, but the second removed the null values to provide a baseline comparison with the other classifiers. For the latter subset, there were 68,680 samples. The procedure for both sets was consistent: first, 20% of the records were randomly assigned as test data, and 80% were used to train the model, with a 10-fold cross-validation. A pseudo-random seed was chosen to maintain the same test-train split, while also remaining unbiased in the selection.
 
 ## Results
 
 ## References
 
 CDC. (2024, April 29). *Heart Disease Facts.* CDC. <https://www.cdc.gov/heart-disease/data-research/facts-stats/index.html>
+
+Liu, A. et. al. (2024, December 17). *biostat_625_final*. [Github Repository] <https://github.com/KatherineWasmer/biostat_625_final>
 
 Ulianova, S. (2018). *Cardiovascular Disease dataset* [Dataset]. Ryerson University. <https://www.kaggle.com/datasets/sulianova/cardiovascular-disease-dataset>
