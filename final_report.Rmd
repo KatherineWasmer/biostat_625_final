@@ -69,9 +69,9 @@ We ran two different sets with the HistGradientBoostingClassifier; the first set
 
 ## Results
 
-![Table 1: Comparison of metrics across models (null values removed)](images/AD_4nXdaRu61mmiWnX1e_STt_LKHaPddglJWTnU9woecZ1ac7tNoxRxyeLOl__S8i8936XNSutQdQIoXFkUfFEx5ysvegYzBeZA96SHdj9fEJjAdZsvD-BnsnC2Z-01.png)
+![Table 1: Comparison of metrics across different classifiers (null values dropped)](images/AD_4nXcS5BGhPeO6SvENYO8eSAeyoVTyAhpOuemcIYcRvDVMR4S8oRBEmXGFGt2dBbMRVp2hHOMJ6FeX-uJvx4yQ4CxIxS6I1YRTMoFDlehTCsmxnPZS9ZvndjFw.png)
 
-The performance metrics of the four models are shown in Table 1. In our study, XGBoost demonstrated the best performance, attaining the highest AUROC value of 0.80 and the highest accuracy of 0.74, while having a relatively fast computation time of 17.51 minutes, presenting its robust predictive ability. Random Forest followed closely with an AUROC of 0.79, a recall of 0.76, and an accuracy of 0.72. Its computation time was 16.56 minutes which was the fastest. In contrast, the HistGradientBoostingClassifier achieved the highest precision of 0.76, though its AUROC was lower at 0.73, and it required the longest runtime of 42.39 minutes, indicating a disparity between prediction precision and computational efficiency. The SVM model performed moderately across all aspects. Overall, XGBoost was the most effective model in the study.
+The performance metrics of the four models are shown in Table 1. In our study, XGBoost demonstrated the best performance, attaining the highest AUROC value of 0.80 and the highest accuracy of 0.74, while having a relatively fast computation time of 17.51 minutes, presenting its robust predictive ability. Random Forest followed closely with an AUROC of 0.79, a recall of 0.76, and an accuracy of 0.72. Its computation time was 16.56 minutes which was the fastest. In contrast, the HistGradientBoostingClassifier achieved the highest precision of 0.76 and the highest AUROC of 0.80, but it required the longest runtime of 42.39 minutes, indicating a disparity between prediction precision and computational efficiency. The SVM model performed moderately across all aspects. Overall, XGBoost was the most effective model in the study.
 
 ## References
 
