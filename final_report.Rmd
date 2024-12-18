@@ -1,5 +1,5 @@
 ---
-title: "Predicting Outcomes in Cardiovascular Disease"
+title: "Cardiovascular Disease Prediction"
 author: "Anyan Liu, Wenxin Ni, Kate Wasmer, You Wu"
 date: "`r Sys.Date()`"
 output: pdf_document
@@ -11,7 +11,7 @@ Heart disease is closely related to morbidity, mortality and high medical cost. 
 
 ## Introduction
 
-Heart disease is the leading cause of death in the United States and does not discriminate against sex or race. According to the Center for Disease Control and Prevention, one person dies from cardiovascular disease every 33 seconds. This translates to roughly 2,600 deaths per day, which actuates the need for correctly identifying and diagnosing this condition. Furthermore, individuals who are less likely to develop heart problems (e.g., those under the age of 50) often fall under the radar, and therefore do not receive the proper medical care. The lack of preventative measures in cases like these lead to fatal consequences, resulting in orphaned children and wrongful deaths. However, age is only one of many factors that play a role in cardiovascular disease.
+Heart disease is the leading cause of death in the United States and does not discriminate against sex or race. According to the Center for Disease Control and Prevention, one person dies from cardiovascular disease every 33 seconds, which actuates the need for correctly identifying and diagnosing this condition. Furthermore, individuals who are less likely to develop heart problems (e.g., those under the age of 50) often fall under the radar, and therefore do not receive the proper medical care. The lack of preventative measures in cases like these lead to fatal consequences, resulting in orphaned children and wrongful deaths. However, age is only one of many factors that play a role in cardiovascular disease.
 
 By analyzing datasets with a wide range of predictors and ensembling machine learning models, our objective in this project was to determine whether or not an individual will develop heart disease with the greatest possible accuracy.[^1] The alarming statistics for this condition propelled us to engineer and fine-tune different classifiers to obtain not only a high level of accuracy, but also desirable precision and recall rates. Alongside the overarching goal of achieving optimal performance metrics, we also investigated the strength of each feature in our dataset, determining which factors are the most integral to developing heart disease.
 
@@ -45,7 +45,7 @@ The issue of missing values was particularly important for the SVM. Since the re
 
 Initially, we used the Linear kernel for training the SVM model. However, the training process took an exceptionally long time, making it computationally inefficient. To address this, we switched to the Radial kernel, which significantly reduced the training time. Additionally, we compared the accuracy of two groups and found that they are comparable. Therefore, we proceeded with the Radial kernel for further hyperparameter tuning.
 
-Then, we performed 10-fold cross-validation grid search to tune the hyperparameters cost and gamma. After comparing the results, we selected the combination of these two hyperparameters that yielded the highest accuracy.
+Then, we performed 10-fold cross-validation grid search to tune the hyperparameters cost and gamma.
 
 ### Random Forest
 
@@ -68,20 +68,24 @@ The HistGradientBoostingClassifier (HGBC) is seen as an extension of the XGBoost
 We ran two different sets with the HistGradientBoostingClassifier; the first set included all 70,000 records due to the native support of missing values, but the second removed the null values to provide a baseline comparison with the other classifiers. For the latter subset, there were 68,680 samples. The procedure for both sets was consistent: first, 20% of the records were randomly assigned as test data, and 80% were used to train the model, with a 10-fold cross-validation. A pseudo-random seed was chosen to maintain the same test-train split, while also remaining unbiased in the selection.
 
 ## Results
+We performed exploratory data analysis to gain initial insights into the dataset.
 
-![Table 1: Comparison of metrics across different classifiers (null values dropped)](images/AD_4nXcS5BGhPeO6SvENYO8eSAeyoVTyAhpOuemcIYcRvDVMR4S8oRBEmXGFGt2dBbMRVp2hHOMJ6FeX-uJvx4yQ4CxIxS6I1YRTMoFDlehTCsmxnPZS9ZvndjFw.png)
+From the proportion of heart disease (0 = No, 1 = Yes), the data used in the study is almost balanced so we do not need to use resampling methods. We also use the correlation heatmap to check there is no multicollinearity among our 14 predictors.
 
-The performance metrics of the four models are shown in Table 1. In our study, XGBoost demonstrated the best performance, attaining the highest AUROC value of 0.80 and the highest accuracy of 0.74, while having a relatively fast computation time of 17.51 minutes, presenting its robust predictive ability. Random Forest followed closely with an AUROC of 0.79, a recall of 0.76, and an accuracy of 0.72. Its computation time was 16.56 minutes which was the fastest. In contrast, the HistGradientBoostingClassifier (n = 68,680) achieved the highest precision of 0.76 and the highest AUROC of 0.80, but it required the longest runtime of 42.39 minutes, indicating a disparity between prediction precision and computational efficiency. The efficiency and precision are supported by the comparison of the HGBC on the entire dataset (n=70,000); with the null values included, it had a precision of 0.76, a recall rate of 0.7, an accuracy of 0.734, and an AUROC of 0.8. These metrics were essentially identical, which can be attributed to the large sample size. However, the slight increase in recall rate suggests that retaining the null values in a model that natively accepts them is the best approach in general. The SVM model performed moderately across all aspects. Overall, XGBoost was the most effective model in the study.
+![EDA Analysis](images/EDA.jpg){ width=70% }
 
-### **Feature Importance Rankings**
 
-Variable importance was determined by the coefficient effect size for machine learning models. For XGBoost, the most important 3 features are physical activity, age and blood pressure. For HGBC, the most important 3 features are  physical activity, cholesterol and age. For Random Forest, the most important 3 features are BMI,  physical activity and age.  For SVM, the most important 3 features are physical activity, age and alcohol intake. Additionally, we found that age and physical activity are always important in our models, so we generally deduce maybe they are important predictors which provide effective guidance for clinicians.
 
-## Conclusion 
+The performance metrics of the four models are shown in Table 1.
 
-In this study, we investigated the performance of four machine learning models-**XGBoost, Random Forest, SVM, and HistGradientBoostingClassifier**—to predict heart disease outcomes using a dataset of 70,000 sample sizes with 14 features. We also conducted a feature importance analysis to detect the most important predictors in each model so that generally identify the most significant predictors of heart disease.
+![Comparison of metrics across different classifiers (null values dropped)](images/table.jpg)
 
-Our study shows that XGBoost provides the best overall performance, achieving the highest AUROC (0.80) and accuracy (0.74), while maintaining a relatively fast computation time of 17.51 minutes. This highlights its effectiveness as a robust and efficient classifier. However, in real-world scenarios, clinicians should further consider the actual data quality and diagnostic requirements to select the optimal model. Additionally, we find that age and physical activity are always the most important predictors of heart disease.
+Following is the AUROC curve of four classifiers.
+
+![AUROC curve of four classifiers](images/ROC.jpg){ width=50% }
+
+In our study, XGBoost demonstrated the best performance, attaining the highest AUROC value of 0.80 and the highest accuracy of 0.74, while having a relatively fast computation time of 17.51 minutes, presenting its robust predictive ability. Random Forest followed closely with an AUROC of 0.79, a recall of 0.76, and an accuracy of 0.72. Its computation time was 16.56 minutes which was the fastest. 
+In contrast, the HistGradientBoostingClassifier (n = 68,680) achieved the highest precision of 0.76 and the highest AUROC of 0.80, but it required the longest runtime of 42.39 minutes, indicating a disparity between prediction precision and computational efficiency. The efficiency and precision are supported by the comparison of the HGBC on the entire dataset (n=70,000); with the null values included, it had a precision of 0.76, a recall rate of 0.7, an accuracy of 0.734, and an AUROC of 0.8. These metrics were essentially identical, which can be attributed to the large sample size. However, the slight increase in recall rate suggests that retaining the null values in a model that natively accepts them is the best approach in general. The SVM model performed moderately across all aspects. Overall, XGBoost was the most effective model in the study.
 
 ## References
 
@@ -96,3 +100,9 @@ Liu, A. et. al. (2024, December 17). *biostat_625_final*. [Github Repository] <h
 *Python Machine Learning - AUC - ROC Curve*. (n.d.). Www.w3schools.com. <https://www.w3schools.com/python/python_ml_auc_roc.asp>
 
 Ulianova, S. (2018). *Cardiovascular Disease dataset* [Dataset]. Ryerson University. <https://www.kaggle.com/datasets/sulianova/cardiovascular-disease-dataset>
+
+## Contribution
+Anyan Liu: Performed the Random Forest Model preliminarily, and wrote the abstract, results and conclusion parts.
+Wenxin Ni: Performed the XGBoost part and wrote conclusion part.
+Kate Wasmer: Discovered the dataset, feature engineered the columns for maximum efficiency, replaced anomalous values with null values, worked on the HistGradientBoostingClassifier, and wrote the introduction and methods section for the paper.
+You Wu: Performed the SVM and Random Forest Model, integrate code, did part of EDA analysis and wrote the introduction of SVM.
