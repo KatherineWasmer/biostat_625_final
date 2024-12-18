@@ -114,30 +114,3 @@ plot_feature_importance <- function(model, train_data) {
   xgb.plot.importance(importance_matrix, main = "XGBoost Feature Importance")
 }
 
-# 8. Main Function
-main <- function() {
-  # Load and preprocess data
-  data <- load_and_clean_data("cleaned_data_v2.csv")
-  data <- preprocess_data(data)
-  
-  # Split data
-  split <- split_data(data)
-  train_data <- split$train
-  test_data <- split$test
-  
-  # Train model and tune hyperparameters
-  xgb_tuned <- train_xgb_model(train_data)
-  print("Best Hyperparameters:")
-  print(xgb_tuned$bestTune)
-  
-  # Train final model
-  final_model <- train_final_model(train_data, xgb_tuned$bestTune)
-  
-  # Evaluate the model
-  evaluate_model(final_model, test_data)
-  
-  # Plot feature importance
-  plot_feature_importance(final_model, train_data)
-}
-
-
