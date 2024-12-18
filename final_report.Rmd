@@ -7,7 +7,7 @@ output: pdf_document
 
 ## Abstract
 
-Heart disease is closely related to morbidity, mortality and high medical cost. Due to its high prevalence and severe risk, accurately predicting heart disease is essential. Machine learning algorithms have proven effective in predicting disease. Our study aimed to access and summarize the performance of several machine learning models in predicting heart disease. In this study, heart disease medical records were retrieved from the Cardiovascular Disease dataset (Ulianova, 2018) on Kaggle with a sample size 70,000. The dataset was randomly divided into 80% training and 20% testing sets. With 14 potential predictors, four machine learning models (SVM, Random Forest, XGBoost, HistGradientBoostingClassifier) were employed and used hyperparameter optimization in our study. For predictive performance, xxxx had the highest xxx ( ), and xxxx had the best xxxx ( ). In addition, xxx had high AUC ( ) comparable to other models. We conclude that the xxxxxx model outperforms other algorithms in predicting heart disease. However, there exists heterogeneity among ML algorithms in multiple parameters. Clinicians can leverage these differences to apply the most suitable algorithm for their dataset, thereby optimizing predictive performance.
+Heart disease is closely related to morbidity, mortality and high medical cost. Due to its high prevalence and severe risk, accurately predicting heart disease is essential. Machine learning algorithms have proven effective in predicting disease. Our study aimed to access and summarize the performance of several machine learning models in predicting heart disease. In this study, heart disease medical records were retrieved from the Cardiovascular Disease dataset (Ulianova, 2018) on Kaggle with a sample size 70,000. The dataset was randomly divided into 80% training and 20% testing sets. With 14 potential predictors, four machine learning models (SVM, Random Forest, XGBoost, HistGradientBoostingClassifier) were employed and used hyperparameter optimization in our study. For predictive performance, XGBoost had the highest Accuracy of 0.74, the highest Recall of 0.78 and the best AUROC of 0.80. RF had the fastest computation time of 17.51 minutes. HistGradientBoostingClassifier had the highest precision of 0.76 comparable to other models. We conclude that the XGBoost model outperforms other algorithms in predicting heart disease. However, there exists heterogeneity among ML algorithms in multiple parameters. Clinicians can leverage these differences to apply the most suitable algorithm for their dataset, thereby optimizing predictive performance.
 
 ## Introduction
 
@@ -35,11 +35,13 @@ Before implementing any machine learning algorithms on the data, we spent a day 
 
 5.  The reported systolic and diastolic blood pressures caused a problem in the scientific integrity of our research. Many of the measurements were not recorded accurately; examples included negative blood pressures (which is not possible), or cases where the systolic number was lower than the diastolic, which cannot realistically happen. To avoid making false assumptions about this erroneous data, we replaced these blood pressure values with null values, which would later be imputed, natively used in a classifier, or just deleted from the dataset.
 
+In the next 4 sections, we describe the classifiers that each individual used.
+
 ### Support Vector Machine
 
 Support Vector Machines(SVM) are powerful models widely used for classification problems. SVMs are especially effective handling high-dimensional data, although our dataset only includes 14 variables, they are still suitable because SVMs still can find optimal decision boundaries. Also, the correlation matrix plot shown before shows weak linear relationship, which means that compared to linear model, SVM can be a good choice. Besides, SVMs have good resistance to overfitting, especially for low-dimensional datasets like the one we used.
 
-For SVM, we should carefully address the missing value issue. According to a study done by JiaHang Li et al., KNN imputation turns out to be a good imputation approach for SVM models. Thus, in our study, we also try KNN imputation to check whether it can enhance the overall performance. Also, we train another model using dataset with null values directly removed.
+The issue of missing values was particularly important for the SVM. Since the records containing null values accounted for less than 5 percent of the sample size, we decided to directly remove the null values.
 
 Initially, we used the Linear kernel for training the SVM model. However, the training process took an exceptionally long time, making it computationally inefficient. To address this, we switched to the Radial kernel, which significantly reduced the training time. Additionally, we compared the accuracy of two groups and found that they are comparable. Therefore, we proceeded with the Radial kernel for further hyperparameter tuning.
 
@@ -67,14 +69,20 @@ We ran two different sets with the HistGradientBoostingClassifier; the first set
 
 ## Results
 
+![Table 1: Comparison of metrics across models (null values removed)](images/AD_4nXdaRu61mmiWnX1e_STt_LKHaPddglJWTnU9woecZ1ac7tNoxRxyeLOl__S8i8936XNSutQdQIoXFkUfFEx5ysvegYzBeZA96SHdj9fEJjAdZsvD-BnsnC2Z-01.png)
+
+The performance metrics of the four models are shown in Table 1. In our study, XGBoost demonstrated the best performance, attaining the highest AUROC value of 0.80 and the highest accuracy of 0.74, while having a relatively fast computation time of 17.51 minutes, presenting its robust predictive ability. Random Forest followed closely with an AUROC of 0.79, a recall of 0.76, and an accuracy of 0.72. Its computation time was 16.56 minutes which was the fastest. In contrast, the HistGradientBoostingClassifier achieved the highest precision of 0.76, though its AUROC was lower at 0.73, and it required the longest runtime of 42.39 minutes, indicating a disparity between prediction precision and computational efficiency. The SVM model performed moderately across all aspects. Overall, XGBoost was the most effective model in the study.
+
 ## References
 
-American Heart Association. (2024, May 17). *Understanding blood pressure readings*. American Heart Association. https://www.heart.org/en/health-topics/high-blood-pressure/understanding-blood-pressure-readings
+American Heart Association. (2024, May 17). *Understanding blood pressure readings*. American Heart Association. <https://www.heart.org/en/health-topics/high-blood-pressure/understanding-blood-pressure-readings>
 
 CDC. (2024, April 29). *Heart Disease Facts.* CDC. <https://www.cdc.gov/heart-disease/data-research/facts-stats/index.html>
 
 *HistGradientBoostingClassifier.* (2024). Scikit-Learn. <https://scikit-learn.org/1.5/modules/generated/sklearn.ensemble.HistGradientBoostingClassifier.html>
 
 Liu, A. et. al. (2024, December 17). *biostat_625_final*. [Github Repository] <https://github.com/KatherineWasmer/biostat_625_final>
+
+*Python Machine Learning - AUC - ROC Curve*. (n.d.). Www.w3schools.com. <https://www.w3schools.com/python/python_ml_auc_roc.asp>
 
 Ulianova, S. (2018). *Cardiovascular Disease dataset* [Dataset]. Ryerson University. <https://www.kaggle.com/datasets/sulianova/cardiovascular-disease-dataset>
