@@ -73,6 +73,16 @@ We ran two different sets with the HistGradientBoostingClassifier; the first set
 
 The performance metrics of the four models are shown in Table 1. In our study, XGBoost demonstrated the best performance, attaining the highest AUROC value of 0.80 and the highest accuracy of 0.74, while having a relatively fast computation time of 17.51 minutes, presenting its robust predictive ability. Random Forest followed closely with an AUROC of 0.79, a recall of 0.76, and an accuracy of 0.72. Its computation time was 16.56 minutes which was the fastest. In contrast, the HistGradientBoostingClassifier (n = 68,680) achieved the highest precision of 0.76 and the highest AUROC of 0.80, but it required the longest runtime of 42.39 minutes, indicating a disparity between prediction precision and computational efficiency. The efficiency and precision are supported by the comparison of the HGBC on the entire dataset (n=70,000); with the null values included, it had a precision of 0.76, a recall rate of 0.7, an accuracy of 0.734, and an AUROC of 0.8. These metrics were essentially identical, which can be attributed to the large sample size. However, the slight increase in recall rate suggests that retaining the null values in a model that natively accepts them is the best approach in general. The SVM model performed moderately across all aspects. Overall, XGBoost was the most effective model in the study.
 
+### **Feature Importance Rankings**
+
+Variable importance was determined by the coefficient effect size for machine learning models. For XGBoost, the most important 3 features are physical activity, age and blood pressure. For HGBC, the most important 3 features are  physical activity, cholesterol and age. For Random Forest, the most important 3 features are BMI,  physical activity and age.  For SVM, the most important 3 features are physical activity, age and alcohol intake. Additionally, we found that age and physical activity are always important in our models, so we generally deduce maybe they are important predictors which provide effective guidance for clinicians.
+
+## Conclusion 
+
+In this study, we investigated the performance of four machine learning models-**XGBoost, Random Forest, SVM, and HistGradientBoostingClassifier**—to predict heart disease outcomes using a dataset of 70,000 sample sizes with 14 features. We also conducted a feature importance analysis to detect the most important predictors in each model so that generally identify the most significant predictors of heart disease.
+
+Our study shows that XGBoost provides the best overall performance, achieving the highest AUROC (0.80) and accuracy (0.74), while maintaining a relatively fast computation time of 17.51 minutes. This highlights its effectiveness as a robust and efficient classifier. However, in real-world scenarios, clinicians should further consider the actual data quality and diagnostic requirements to select the optimal model. Additionally, we find that age and physical activity are always the most important predictors of heart disease.
+
 ## References
 
 American Heart Association. (2024, May 17). *Understanding blood pressure readings*. American Heart Association. <https://www.heart.org/en/health-topics/high-blood-pressure/understanding-blood-pressure-readings>
